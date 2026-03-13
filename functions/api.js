@@ -2,8 +2,7 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
 
-  // Gunakan binding yang benar sesuai Pages D1
-  const db = env.DB;
+  const db = env.DB;  // binding D1 yang benar
 
   if (!url.pathname.startsWith('/api')) return fetch(request);
 
@@ -12,9 +11,8 @@ export async function onRequest(context) {
   try {
     if (action === 'login') {
       const { username, password } = await request.json();
-      if (username === 'admin' && password === '1234') {
+      if (username === 'admin' && password === '1234')
         return new Response(JSON.stringify({ success: true }), { status: 200 });
-      }
       return new Response(JSON.stringify({ success: false }), { status: 200 });
     }
 
