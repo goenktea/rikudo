@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>RIKUDO_NET</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>RIKUDO_NET</h1>
+    <button id="menuBtn">☰</button>
+    <div id="menuContent">
+      <button id="addNote">Tambah Catatan</button>
+      <button id="history">Riwayat</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="noteTitle"></div>
+    <button id="addCustomer">Tambah Pelanggan</button>
+    <table id="customerTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Pelanggan</th>
+          <th>No HP/WA</th>
+          <th>Total Tagihan</th>
+          <th>Uang Diterima</th>
+          <th>Sisa Tagihan</th>
+          <th>Edit</th>
+          <th>Hapus</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">Total</td>
+          <td id="totalTagihan">0</td>
+          <td id="totalDiterima">0</td>
+          <td id="totalSisa">0</td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
