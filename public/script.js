@@ -8,9 +8,10 @@ async function fetchNote(id) {
 async function loadLatestNote() {
   const data = await fetch('/api?action=latestNote').then(r=>r.json());
   if(data.success){
-    currentNoteId = data.note.id;
-    document.getElementById('noteTitle').innerText = data.note.name;
-    renderCustomers(data.note.customers || []);
+    const note = data.data[0];
+    currentNoteId = note?.id;
+    document.getElementById('noteTitle').innerText = note?.name || 'Belum ada catatan';
+    renderCustomers(note?.customers || []);
   }
 }
 
@@ -40,5 +41,5 @@ function renderCustomers(customers){
   document.getElementById('totalSisa').innerText = totalSisa;
 }
 
-// Load on start
+// Load note saat halaman dibuka
 loadLatestNote();
