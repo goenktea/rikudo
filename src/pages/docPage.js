@@ -1,93 +1,48 @@
-import {layout} from "../utils/layout.js"
+export function docPage(data){
 
-export function docPage(doc,customers,total,totalPaid,totalRemain){
+return `
 
-const content = `
+<html>
 
-<h3>
-Daftar tagihan pelanggan wifi RIKUDO_NET bulan ${doc.name}
-</h3>
+<head>
 
-<button onclick="tambah(${doc.id})">
-Tambah pelanggan baru
-</button>
+<title>Edit Pelanggan</title>
 
-<table>
+<link rel="stylesheet" href="/style.css">
 
-<tr>
-<th>No</th>
-<th>Nama</th>
-<th>Alamat</th>
-<th>HP</th>
-<th>Total</th>
-<th>Dibayar</th>
-<th>Sisa</th>
-<th>Edit</th>
-<th>Hapus</th>
-</tr>
+</head>
 
-${customers.map((c,i)=>`
+<body>
 
-<tr>
+<header>
 
-<td>${i+1}</td>
-<td>${c.name}</td>
-<td>${c.address}</td>
-<td>${c.phone}</td>
-<td>${c.total}</td>
-<td>${c.paid}</td>
-<td>${c.total-c.paid}</td>
+<h2>RIKUDO_NET</h2>
 
-<td>
-<a href="/edit/${c.id}">&#9998;</a>
-</td>
+</header>
 
-<td>
-<a href="/delete/${c.id}">&#128465;</a>
-</td>
+<h3>Edit Pelanggan</h3>
 
-</tr>
+<form method="POST" action="/doc/update">
 
-`).join("")}
+<input type="hidden" name="id" value="${data.id}">
 
-</table>
+<input name="name" value="${data.name}" placeholder="nama">
 
-<p>Total seluruh tagihan : ${total}</p>
-<p>Total uang masuk : ${totalPaid}</p>
-<p>Sisa tagihan : ${totalRemain}</p>
+<input name="address" value="${data.address}" placeholder="alamat">
 
-<script>
+<input name="phone" value="${data.phone}" placeholder="no hp">
 
-function tambah(docId){
+<input name="total_bill" value="${data.total_bill}" placeholder="total tagihan">
 
-const nama=prompt("Nama pelanggan")
-if(!nama) return
+<input name="paid" value="${data.paid}" placeholder="uang diterima">
 
-const alamat=prompt("Alamat")
-const hp=prompt("No HP / WhatsApp")
-const total=prompt("Total tagihan")
+<button>Simpan</button>
 
-const f=document.createElement("form")
+</form>
 
-f.method="POST"
-f.action="/add-customer"
+</body>
 
-f.innerHTML=
-"<input name='doc_id' value='"+docId+"'>"+
-"<input name='name' value='"+nama+"'>"+
-"<input name='address' value='"+alamat+"'>"+
-"<input name='phone' value='"+hp+"'>"+
-"<input name='total' value='"+total+"'>"
-
-document.body.appendChild(f)
-f.submit()
-
-}
-
-</script>
+</html>
 
 `
-
-return layout(doc.name,content)
-
 }
