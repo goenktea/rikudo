@@ -7,11 +7,11 @@ let remain=0
 
 customers.forEach((c,i)=>{
 
-total += c.total_bill
-paid += c.paid
-remain += c.remaining
+total+=c.total_bill
+paid+=c.paid
+remain+=c.remaining
 
-rows += `
+rows+=`
 <tr>
 <td>${i+1}</td>
 <td>${c.name}</td>
@@ -20,6 +20,8 @@ rows += `
 <td>${c.total_bill}</td>
 <td>${c.paid}</td>
 <td>${c.remaining}</td>
+<td><a href="/edit/${c.id}">✏</a></td>
+<td><a href="/delete/${c.id}">🗑</a></td>
 </tr>
 `
 })
@@ -29,14 +31,14 @@ return `
 
 <head>
 
-<title>Dokumen</title>
+<title>${doc.name}</title>
 
 <style>
 
 body{
 font-family:Arial;
 margin:0;
-background:#f2f2f2;
+background:#f4f6f9;
 }
 
 header{
@@ -47,6 +49,14 @@ padding:15px;
 
 .container{
 padding:20px;
+}
+
+button{
+background:#28a745;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:5px;
 }
 
 table{
@@ -62,10 +72,40 @@ padding:8px;
 }
 
 th{
-background:#f0f0f0;
+background:#eee;
 }
 
 </style>
+
+<script>
+
+function addCustomer(){
+
+let name=prompt("Nama pelanggan")
+let address=prompt("Alamat")
+let phone=prompt("HP / WhatsApp")
+let total=prompt("Total tagihan")
+let paid=prompt("Uang diterima")
+
+if(name){
+
+fetch("/add-customer",{
+method:"POST",
+body:new URLSearchParams({
+document_id:${doc.id},
+name:name,
+address:address,
+phone:phone,
+total:total,
+paid:paid
+})
+}).then(()=>location.reload())
+
+}
+
+}
+
+</script>
 
 </head>
 
@@ -79,27 +119,9 @@ background:#f0f0f0;
 
 <div class="container">
 
-<h2>Daftar tagihan bulan ${doc.name}</h2>
+<h3>Daftar tagihan pelanggan wifi RIKUDO_NET bulan ${doc.name}</h3>
 
-<h3>Tambah pelanggan</h3>
-
-<form method="POST" action="/add-customer">
-
-<input type="hidden" name="document_id" value="${doc.id}">
-
-<input name="name" placeholder="Nama">
-
-<input name="address" placeholder="Alamat">
-
-<input name="phone" placeholder="HP">
-
-<input name="total" placeholder="Total tagihan">
-
-<input name="paid" placeholder="Uang diterima">
-
-<button>Simpan</button>
-
-</form>
+<button onclick="addCustomer()">+ Tambah pelanggan</button>
 
 <table>
 
@@ -112,6 +134,8 @@ background:#f0f0f0;
 <th>Total</th>
 <th>Dibayar</th>
 <th>Sisa</th>
+<th>Edit</th>
+<th>Hapus</th>
 
 </tr>
 
@@ -119,9 +143,9 @@ ${rows}
 
 </table>
 
-<p>Total Tagihan : ${total}</p>
-<p>Total Uang Masuk : ${paid}</p>
-<p>Total Sisa : ${remain}</p>
+<h3>Total Tagihan : ${total}</h3>
+<h3>Total Uang Masuk : ${paid}</h3>
+<h3>Total Sisa Tagihan : ${remain}</h3>
 
 </div>
 
