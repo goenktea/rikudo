@@ -3,7 +3,7 @@ export async function onRequest(context) {
   const url = new URL(request.url);
 
   // Gunakan binding D1 yang benar
-  const db = env.rikudo;
+  const db = env.DB;
 
   // fallback ke static jika bukan /api
   if (!url.pathname.startsWith('/api')) return fetch(request);
