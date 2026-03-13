@@ -8,7 +8,7 @@ const docs = await env.DB.prepare(
 
 return new Response(
 dashboardPage(docs.results),
-{headers:{"content-type":"text/html"}}
+{headers:{ "content-type":"text/html"}}
 )
 
 }
@@ -16,11 +16,15 @@ dashboardPage(docs.results),
 export async function createDoc(request,env){
 
 const form = await request.formData()
+
 const name = form.get("name")
 
 await env.DB.prepare(
 "INSERT INTO documents(name,created_at) VALUES(?,datetime('now'))"
 ).bind(name).run()
 
-return Response.redirect("/dashboard")
+const url = new URL(request.url)
+
+return Response.redirect(url.origin + "/dashboard")
+
 }
