@@ -14,27 +14,19 @@ return `
 
 <body>
 
-<header>
+<h2>Edit Pelanggan</h2>
 
-<h2>RIKUDO_NET</h2>
+<form>
 
-</header>
+<input value="${data.name}" placeholder="nama">
 
-<h3>Edit Pelanggan</h3>
+<input value="${data.address}" placeholder="alamat">
 
-<form method="POST" action="/doc/update">
+<input value="${data.phone}" placeholder="no hp">
 
-<input type="hidden" name="id" value="${data.id}">
+<input value="${data.total_bill}" placeholder="total tagihan">
 
-<input name="name" value="${data.name}" placeholder="nama">
-
-<input name="address" value="${data.address}" placeholder="alamat">
-
-<input name="phone" value="${data.phone}" placeholder="no hp">
-
-<input name="total_bill" value="${data.total_bill}" placeholder="total tagihan">
-
-<input name="paid" value="${data.paid}" placeholder="uang diterima">
+<input value="${data.paid}" placeholder="uang diterima">
 
 <button>Simpan</button>
 
@@ -45,4 +37,5 @@ return `
 </html>
 
 `
+
 }
