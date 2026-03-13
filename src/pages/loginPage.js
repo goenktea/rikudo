@@ -31,6 +31,7 @@ text-align:center;
 
 .login-box h2{
 margin-bottom:10px;
+color:#333;
 }
 
 .login-box input{
@@ -39,6 +40,7 @@ padding:10px;
 margin:8px 0;
 border:1px solid #ddd;
 border-radius:5px;
+font-size:14px;
 }
 
 .login-box button{
@@ -48,6 +50,7 @@ background:#007bff;
 border:none;
 color:white;
 border-radius:5px;
+font-size:16px;
 cursor:pointer;
 }
 
