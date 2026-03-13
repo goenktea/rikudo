@@ -30,6 +30,7 @@ return `
 <html>
 
 <head>
+<meta charset="UTF-8">
 
 <title>${doc.name}</title>
 
