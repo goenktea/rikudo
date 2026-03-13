@@ -28,13 +28,19 @@ return documentRoute(request, env)
 }
 
 
-// CSS
+// CSS dari public
 if (path === "/style.css") {
-return env.ASSETS.fetch(request)
+return new Response(await env.ASSETS.fetch(request))
 }
 
 
-return new Response("404", { status:404 })
+// TEST ROUTE
+if (path === "/test") {
+return new Response("worker aktif")
+}
+
+
+return new Response("route tidak ditemukan: " + path)
 
 }
 
