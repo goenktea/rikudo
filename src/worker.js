@@ -1,71 +1,73 @@
-import {loginRoute} from "./routes/login.js"
-import {dashboardRoute,createDoc,deleteDoc} from "./routes/dashboard.js"
-import {viewDoc,addCustomer,editCustomer,updateCustomer,deleteCustomer} from "./routes/document.js"
+import { loginRoute } from "./routes/login.js"
+import { dashboardRoute, createDoc, deleteDoc } from "./routes/dashboard.js"
+import { viewDoc, addCustomer, editCustomer, updateCustomer, deleteCustomer } from "./routes/document.js"
 
 export default {
 
-async fetch(request,env){
+async fetch(request, env) {
 
 const url = new URL(request.url)
 const path = url.pathname
 
 /* LOGIN */
 
-if(path === "/" || path === "/login"){
+if (path === "/" || path === "/login") {
 return loginRoute(request)
 }
 
 /* DASHBOARD */
 
-if(path === "/dashboard"){
-return dashboardRoute(request,env)
+if (path === "/dashboard") {
+return dashboardRoute(request, env)
 }
 
-/* CREATE DOC */
+/* CREATE DOCUMENT */
 
-if(path === "/create-doc"){
-return createDoc(request,env)
+if (path === "/create-doc") {
+return createDoc(request, env)
 }
 
-/* DELETE DOC */
+/* DELETE DOCUMENT */
 
-if(path.startsWith("/delete-doc/")){
+if (path.startsWith("/delete-doc/")) {
 const id = path.split("/")[2]
-return deleteDoc(id,request,env)
+return deleteDoc(id, request, env)
 }
 
 /* VIEW DOCUMENT */
 
-if(path.startsWith("/doc/")){
+if (path.startsWith("/doc/")) {
 const id = path.split("/")[2]
-return viewDoc(id,env)
+return viewDoc(id, env)
 }
 
 /* ADD CUSTOMER */
 
-if(path === "/add-customer"){
-return addCustomer(request,env)
+if (path === "/add-customer") {
+return addCustomer(request, env)
 }
 
-/* EDIT CUSTOMER */
+/* EDIT CUSTOMER PAGE */
 
-if(path.startsWith("/edit/")){
+if (path.startsWith("/edit/")) {
 const id = path.split("/")[2]
-return editCustomer(id,env)
+return editCustomer(id, env)
 }
 
 /* UPDATE CUSTOMER */
 
-if(path === "/update-customer"){
-return updateCustomer(request,env)
+if (path === "/update-customer") {
+return updateCustomer(request, env)
 }
 
 /* DELETE CUSTOMER */
 
-if(path.startsWith("/delete/")){
+if (path.startsWith("/delete/")) {
 const id = path.split("/")[2]
-return deleteCustomer(id,env)
+return deleteCustomer(id, env)
 }
+
+/* 404 */
 
 return new Response("404 Not Found")
 
