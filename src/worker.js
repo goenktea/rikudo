@@ -10,7 +10,7 @@ const url = new URL(request.url)
 const path = url.pathname
 
 
-// LOGIN PAGE
+// LOGIN
 if (path === "/") {
 return login(request)
 }
@@ -22,8 +22,8 @@ return dashboard(request, env)
 }
 
 
-// SEMUA ROUTE /doc/*
-if (path.startsWith("/doc")) {
+// DOCUMENT ROUTE
+if (path.startsWith("/document")) {
 return documentRoute(request, env)
 }
 
@@ -34,7 +34,7 @@ return env.ASSETS.fetch(request)
 }
 
 
-return new Response("404 page not found", {status:404})
+return new Response("404", { status:404 })
 
 }
 
