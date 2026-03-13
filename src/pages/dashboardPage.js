@@ -3,6 +3,7 @@ export function dashboardPage(doc, customers){
 let rows = customers.map((c,i)=>`
 
 <tr>
+
 <td>${i+1}</td>
 <td>${c.name}</td>
 <td>${c.address}</td>
@@ -12,8 +13,10 @@ let rows = customers.map((c,i)=>`
 <td>${c.total_bill - c.paid}</td>
 
 <td>
-<a href="/doc/edit?id=${c.id}">✏️</a>
-<a href="/doc/delete?id=${c.id}">🗑</a>
+
+<a href="/document/edit?id=${c.id}">✏️</a>
+<a href="/document/delete?id=${c.id}">🗑</a>
+
 </td>
 
 </tr>
@@ -33,15 +36,15 @@ return `
 
 <style>
 
-.menu-panel{
+.menu{
 display:none;
 background:#eee;
 padding:10px;
 }
 
-.menu-panel a{
+.menu a{
 display:block;
-padding:8px;
+padding:6px;
 text-decoration:none;
 }
 
@@ -51,7 +54,7 @@ text-decoration:none;
 
 <body>
 
-<header style="display:flex;justify-content:space-between;background:#222;color:white;padding:10px">
+<header class="header">
 
 <div>RIKUDO_NET</div>
 
@@ -60,11 +63,11 @@ text-decoration:none;
 </header>
 
 
-<div id="menuPanel" class="menu-panel">
+<div id="menuPanel" class="menu">
 
 <a href="/dashboard">Dokumen Terbaru</a>
 
-<a href="/doc/history">History</a>
+<a href="#">History</a>
 
 <a href="#" onclick="buatDoc()">Buat Dokumen Baru</a>
 
@@ -72,15 +75,17 @@ text-decoration:none;
 
 
 <h3>
+
 Daftar tagihan pelanggan wifi RIKUDO_NET pada bulan
 <b>${doc.name}</b>
+
 </h3>
 
 
 <button>Tambah pelanggan baru</button>
 
 
-<table border="1" width="100%" cellpadding="6">
+<table>
 
 <tr>
 
@@ -100,7 +105,7 @@ ${rows}
 </table>
 
 
-<footer style="margin-top:20px">
+<footer>
 
 copyright 2026 rikudo_net
 
@@ -111,7 +116,7 @@ copyright 2026 rikudo_net
 
 function toggleMenu(){
 
-let m = document.getElementById("menuPanel")
+let m=document.getElementById("menuPanel")
 
 if(m.style.display==="block"){
 m.style.display="none"
@@ -121,13 +126,12 @@ m.style.display="block"
 
 }
 
-
 function buatDoc(){
 
-let name = prompt("Nama dokumen contoh: Januari 2026")
+let name=prompt("Nama dokumen contoh: Januari 2026")
 
 if(name){
-location.href="/doc/create?name="+encodeURIComponent(name)
+location.href="/document/create?name="+encodeURIComponent(name)
 }
 
 }
