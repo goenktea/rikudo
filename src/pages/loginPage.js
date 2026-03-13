@@ -5,6 +5,7 @@ return `
 <html>
 
 <head>
+<meta charset="UTF-8">
 
 <title>Login RIKUDO_NET</title>
 
