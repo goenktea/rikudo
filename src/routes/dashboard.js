@@ -1,6 +1,22 @@
 import {dashboardPage} from "../pages/dashboardPage.js"
 
+/* DASHBOARD */
+
 export async function dashboardRoute(env){
+
+/* cek dokumen terbaru */
+
+const latest = await env.DB.prepare(
+"SELECT id FROM documents ORDER BY id DESC LIMIT 1"
+).first()
+
+/* jika ada dokumen langsung buka */
+
+if(latest){
+return Response.redirect("/doc/" + latest.id)
+}
+
+/* jika belum ada tampilkan history kosong */
 
 const docs = await env.DB.prepare(
 "SELECT * FROM documents ORDER BY id DESC"
@@ -8,12 +24,16 @@ const docs = await env.DB.prepare(
 
 return new Response(
 dashboardPage(docs.results),
-{headers:{ "content-type":"text/html;charset=UTF-8"}}
+{
+headers:{
+"content-type":"text/html;charset=UTF-8"
+}
+}
 )
 
 }
 
-/* CREATE DOC */
+/* BUAT DOKUMEN BARU */
 
 export async function createDoc(request,env){
 
@@ -27,17 +47,27 @@ await env.DB.prepare(
 
 const url = new URL(request.url)
 
-return Response.redirect(url.origin + "/dashboard")
+/* setelah buat dokumen langsung buka */
+
+const latest = await env.DB.prepare(
+"SELECT id FROM documents ORDER BY id DESC LIMIT 1"
+).first()
+
+return Response.redirect(url.origin + "/doc/" + latest.id)
 
 }
 
-/* DELETE DOC */
+/* HAPUS DOKUMEN */
 
 export async function deleteDoc(id,env){
+
+/* hapus semua pelanggan dalam dokumen */
 
 await env.DB.prepare(
 "DELETE FROM customers WHERE document_id=?"
 ).bind(id).run()
+
+/* hapus dokumen */
 
 await env.DB.prepare(
 "DELETE FROM documents WHERE id=?"
@@ -45,7 +75,11 @@ await env.DB.prepare(
 
 return new Response(
 "<script>location='/dashboard'</script>",
-{headers:{ "content-type":"text/html"}}
+{
+headers:{
+"content-type":"text/html;charset=UTF-8"
+}
+}
 )
 
 }
