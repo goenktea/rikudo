@@ -1,114 +1,54 @@
-import {docPage,editPage} from "../pages/docPage.js"
+import { docPage } from "../pages/docPage"
 
-export async function viewDoc(id,env){
+export async function documentRoute(request, env) {
 
-const doc = await env.DB.prepare(
-"SELECT * FROM documents WHERE id=?"
-).bind(id).first()
+  const url = new URL(request.url)
 
-const customers = await env.DB.prepare(
-"SELECT * FROM customers WHERE document_id=? LIMIT 100"
-).bind(id).all()
+  // CREATE DOCUMENT
+  if (url.pathname === "/doc/create") {
 
-return new Response(
-docPage(doc,customers.results),
-{headers:{ "content-type":"text/html;charset=UTF-8"}}
-)
+    const name = url.searchParams.get("name")
 
-}
+    await env.DB
+      .prepare(`INSERT INTO documents (name) VALUES (?)`)
+      .bind(name)
+      .run()
 
-/* ADD CUSTOMER */
+    return Response.redirect("/dashboard", 302)
+  }
 
-export async function addCustomer(request,env){
 
-const form = await request.formData()
+  // DELETE CUSTOMER
+  if (url.pathname === "/doc/delete") {
 
-const doc = form.get("document_id")
+    const id = url.searchParams.get("id")
 
-const name = form.get("name")
-const address = form.get("address")
-const phone = form.get("phone")
+    await env.DB
+      .prepare(`DELETE FROM customers WHERE id=?`)
+      .bind(id)
+      .run()
 
-const total = Number(form.get("total"))
-const paid = Number(form.get("paid"))
+    return Response.redirect("/dashboard", 302)
+  }
 
-const remain = total - paid
 
-await env.DB.prepare(`
-INSERT INTO customers
-(document_id,name,address,phone,total_bill,paid,remaining)
-VALUES(?,?,?,?,?,?,?)
-`)
-.bind(doc,name,address,phone,total,paid,remain)
-.run()
+  // EDIT PAGE
+  if (url.pathname === "/doc/edit") {
 
-const url = new URL(request.url)
+    const id = url.searchParams.get("id")
 
-return Response.redirect(url.origin + "/doc/" + doc)
+    const data = await env.DB
+      .prepare(`SELECT * FROM customers WHERE id=?`)
+      .bind(id)
+      .first()
 
-}
+    return new Response(
+      docPage(data),
+      {
+        headers: { "content-type": "text/html" }
+      }
+    )
+  }
 
-/* EDIT CUSTOMER */
-
-export async function editCustomer(id,env){
-
-const data = await env.DB.prepare(
-"SELECT * FROM customers WHERE id=?"
-).bind(id).first()
-
-return new Response(
-editPage(data),
-{headers:{ "content-type":"text/html;charset=UTF-8"}}
-)
-
-}
-
-/* UPDATE CUSTOMER */
-
-export async function updateCustomer(request,env){
-
-const form = await request.formData()
-
-const id = form.get("id")
-
-const name = form.get("name")
-const address = form.get("address")
-const phone = form.get("phone")
-
-const total = Number(form.get("total"))
-const paid = Number(form.get("paid"))
-
-const remain = total - paid
-
-await env.DB.prepare(`
-UPDATE customers
-SET name=?,address=?,phone=?,total_bill=?,paid=?,remaining=?
-WHERE id=?
-`)
-.bind(name,address,phone,total,paid,remain,id)
-.run()
-
-const url = new URL(request.url)
-
-return Response.redirect(url.origin + "/dashboard")
-
-}
-
-/* DELETE CUSTOMER */
-
-export async function deleteCustomer(id,env){
-
-const data = await env.DB.prepare(
-"SELECT document_id FROM customers WHERE id=?"
-).bind(id).first()
-
-await env.DB.prepare(
-"DELETE FROM customers WHERE id=?"
-).bind(id).run()
-
-return new Response(
-"<script>location='/doc/"+data.document_id+"'</script>",
-{headers:{ "content-type":"text/html"}}
-)
-
+  return new Response("ok")
 }
