@@ -1,5 +1,5 @@
 import {loginRoute} from "./routes/login.js"
-import {dashboardRoute,createDoc} from "./routes/dashboard.js"
+import {dashboardRoute,createDoc,deleteDoc} from "./routes/dashboard.js"
 import {viewDoc,addCustomer,editCustomer,updateCustomer,deleteCustomer} from "./routes/document.js"
 
 export default {
@@ -25,6 +25,13 @@ return dashboardRoute(env)
 
 if(path === "/create-doc"){
 return createDoc(request,env)
+}
+
+/* DELETE DOC */
+
+if(path.startsWith("/delete-doc/")){
+const id = path.split("/")[2]
+return deleteDoc(id,env)
 }
 
 /* VIEW DOCUMENT */
