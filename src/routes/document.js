@@ -12,7 +12,7 @@ const customers = await env.DB.prepare(
 
 return new Response(
 docPage(doc,customers.results),
-{headers:{"content-type":"text/html"}}
+{headers:{ "content-type":"text/html"}}
 )
 
 }
@@ -22,6 +22,7 @@ export async function addCustomer(request,env){
 const form = await request.formData()
 
 const doc = form.get("document_id")
+
 const name = form.get("name")
 const address = form.get("address")
 const phone = form.get("phone")
@@ -29,7 +30,7 @@ const phone = form.get("phone")
 const total = Number(form.get("total"))
 const paid = Number(form.get("paid"))
 
-const remain = total-paid
+const remain = total - paid
 
 await env.DB.prepare(`
 INSERT INTO customers
@@ -39,6 +40,8 @@ VALUES(?,?,?,?,?,?,?)
 .bind(doc,name,address,phone,total,paid,remain)
 .run()
 
-return Response.redirect("/doc/"+doc)
+const url = new URL(request.url)
+
+return Response.redirect(url.origin + "/doc/" + doc)
 
 }
