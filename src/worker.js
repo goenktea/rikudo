@@ -1,6 +1,6 @@
 import {loginRoute} from "./routes/login.js"
 import {dashboardRoute,createDoc} from "./routes/dashboard.js"
-import {viewDoc,addCustomer} from "./routes/document.js"
+import {viewDoc,addCustomer,editCustomer,updateCustomer,deleteCustomer} from "./routes/document.js"
 
 export default {
 
@@ -21,7 +21,7 @@ if(path === "/dashboard"){
 return dashboardRoute(env)
 }
 
-/* CREATE DOCUMENT */
+/* CREATE DOC */
 
 if(path === "/create-doc"){
 return createDoc(request,env)
@@ -38,6 +38,26 @@ return viewDoc(id,env)
 
 if(path === "/add-customer"){
 return addCustomer(request,env)
+}
+
+/* EDIT CUSTOMER */
+
+if(path.startsWith("/edit/")){
+const id = path.split("/")[2]
+return editCustomer(id,env)
+}
+
+/* UPDATE CUSTOMER */
+
+if(path === "/update-customer"){
+return updateCustomer(request,env)
+}
+
+/* DELETE CUSTOMER */
+
+if(path.startsWith("/delete/")){
+const id = path.split("/")[2]
+return deleteCustomer(id,env)
 }
 
 return new Response("404 Not Found")
