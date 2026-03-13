@@ -18,7 +18,7 @@ return loginRoute(request)
 /* DASHBOARD */
 
 if(path === "/dashboard"){
-return dashboardRoute(env)
+return dashboardRoute(request,env)
 }
 
 /* CREATE DOC */
@@ -31,7 +31,7 @@ return createDoc(request,env)
 
 if(path.startsWith("/delete-doc/")){
 const id = path.split("/")[2]
-return deleteDoc(id,env)
+return deleteDoc(id,request,env)
 }
 
 /* VIEW DOCUMENT */
