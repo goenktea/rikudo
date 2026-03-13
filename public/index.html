@@ -1,10 +1,12 @@
 <h1>RIKUDO_NET</h1>
+
 <button onclick="load()">Load Notes</button>
 
 <script>
 async function load(){
-  const res = await fetch('/api/test')
+  const res = await fetch('/api/notes')
   const data = await res.json()
   console.log(data)
+  alert(JSON.stringify(data))
 }
 </script>
