@@ -1,30 +1,26 @@
-export default {
-  async fetch(req, env) {
-    const url = new URL(req.url);
-    const action = url.searchParams.get('action') || (await req.json()).action;
+export async function onRequest(context) {
+  const { request, env, params } = context;
+  const url = new URL(request.url);
+  const db = env.D1;
 
-    const db = env.D1; // D1 binding
-
-    if(action==='login'){
-      const {username,password} = await req.json();
-      // contoh sederhana, hardcode user
-      if(username==='admin' && password==='1234') return new Response(JSON.stringify({success:true}), {status:200});
-      return new Response(JSON.stringify({success:false}), {status:200});
-    }
-
-    if(action==='latestNote'){
-      const res = await db.prepare('SELECT * FROM notes ORDER BY created_at DESC LIMIT 1').all();
-      if(res.results.length===0) return new Response(JSON.stringify({success:false}));
-      return new Response(JSON.stringify({success:true, note:res.results[0]}));
-    }
-
-    if(action==='getNote'){
-      const id = url.searchParams.get('id');
-      const res = await db.prepare('SELECT * FROM notes WHERE id=?').bind(id).first();
-      return new Response(JSON.stringify({success:true, note:res}));
-    }
-
-    // Tambah, edit, hapus catatan & customer bisa ditambah di sini
-    return new Response(JSON.stringify({success:false, msg:'action tidak dikenali'}));
+  // Hanya handle /api/...
+  if(!url.pathname.startsWith('/api')) {
+    return fetch(request); // fallback ke Pages static
   }
+
+  const action = url.searchParams.get('action');
+  
+  if(action==='login'){
+    const {username,password} = await request.json();
+    if(username==='admin' && password==='1234') return new Response(JSON.stringify({success:true}));
+    return new Response(JSON.stringify({success:false}));
+  }
+
+  if(action==='latestNote'){
+    const res = await db.prepare('SELECT * FROM notes ORDER BY created_at DESC LIMIT 1').all();
+    if(res.results.length===0) return new Response(JSON.stringify({success:false}));
+    return new Response(JSON.stringify({success:true, note:res.results[0]}));
+  }
+
+  return new Response(JSON.stringify({success:false, msg:'action tidak dikenali'}));
 }
