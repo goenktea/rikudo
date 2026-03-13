@@ -2,10 +2,9 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
 
-  // Gunakan binding D1 yang benar
+  // Gunakan binding yang benar sesuai Pages D1
   const db = env.DB;
 
-  // fallback ke static jika bukan /api
   if (!url.pathname.startsWith('/api')) return fetch(request);
 
   const action = url.searchParams.get('action') || (await request.json()).action;
@@ -13,8 +12,10 @@ export async function onRequest(context) {
   try {
     if (action === 'login') {
       const { username, password } = await request.json();
-      if (username === 'admin' && password === '1234') return new Response(JSON.stringify({ success: true }));
-      return new Response(JSON.stringify({ success: false }));
+      if (username === 'admin' && password === '1234') {
+        return new Response(JSON.stringify({ success: true }), { status: 200 });
+      }
+      return new Response(JSON.stringify({ success: false }), { status: 200 });
     }
 
     if (action === 'latestNote') {
