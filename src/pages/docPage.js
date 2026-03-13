@@ -20,8 +20,8 @@ rows+=`
 <td>${c.total_bill}</td>
 <td>${c.paid}</td>
 <td>${c.remaining}</td>
-<td><a href="/edit/${c.id}">Edit</a></td>
-<td><a href="/delete/${c.id}">Hapus</a></td>
+<td><a href="/edit/${c.id}">&#9998;</a></td>
+<td><a href="/delete/${c.id}">&#128465;</a></td>
 </tr>
 `
 })
