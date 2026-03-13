@@ -1,31 +1,24 @@
-import {dashboardPage} from "../pages/dashboardPage.js"
+import { dashboardPage } from "../pages/dashboardPage"
 
-export async function dashboardRoute(request,env){
+export async function dashboard(request, env) {
 
-const docs = await env.DB.prepare(
-"SELECT * FROM documents ORDER BY id DESC"
-).all()
+  const doc = await env.DB
+    .prepare(`SELECT * FROM documents ORDER BY id DESC LIMIT 1`)
+    .first()
 
-if(docs.results.length > 0){
+  if (!doc) {
+    return Response.redirect("/doc/history", 302)
+  }
 
-const latest = docs.results[0].id
+  const customers = await env.DB
+    .prepare(`SELECT * FROM customers WHERE doc_id=? ORDER BY id LIMIT 100`)
+    .bind(doc.id)
+    .all()
 
-const url = new URL(request.url)
-
-return Response.redirect(
-url.origin + "/doc/" + latest,
-302
-)
-
-}
-
-return new Response(
-dashboardPage(docs.results),
-{
-headers:{
-"content-type":"text/html;charset=UTF-8"
-}
-}
-)
-
+  return new Response(
+    dashboardPage(doc, customers.results),
+    {
+      headers: { "content-type": "text/html" }
+    }
+  )
 }
