@@ -1,8 +1,0 @@
-name = "rikudo"
-main = "worker.js"
-compatibility_date = "2024-11-01"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "rikudo"
-database_id = "cd3014ea-241e-4862-8935-77b736d2951e"
