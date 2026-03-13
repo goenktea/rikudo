@@ -1,0 +1,8 @@
+name = "rikudo-net"
+main = "src/worker.js"
+compatibility_date = "2026-03-14"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rikudo_net"
+database_id = "d8bbab82-131c-473d-9ab3-01ebf70da6c1"
