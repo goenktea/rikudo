@@ -9,11 +9,14 @@ async fetch(request,env){
 const url = new URL(request.url)
 const path = url.pathname
 
-if(path==="/style.css"){
+/* ROUTE CSS */
 
-const css = `
+if(path === "/style.css"){
+
+return new Response(`
+
 body{
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(135deg,#4facfe,#00f2fe);
 margin:0;
 height:100vh;
@@ -29,10 +32,6 @@ width:320px;
 border-radius:10px;
 box-shadow:0 10px 25px rgba(0,0,0,0.2);
 text-align:center;
-}
-
-.login-box h2{
-margin-bottom:10px;
 }
 
 .login-box input{
@@ -59,42 +58,12 @@ background:#0056b3;
 
 .error{
 color:red;
-margin-bottom:10px;
 }
-`
 
-return new Response(css,{
+`,{
 headers:{
 "content-type":"text/css"
 }
 })
-
-}
-
-
-if(path==="/" || path==="/login"){
-return loginRoute(request)
-}
-
-if(path==="/dashboard"){
-return dashboardRoute(env)
-}
-
-if(path==="/create-doc"){
-return createDoc(request,env)
-}
-
-if(path.startsWith("/doc/")){
-const id = path.split("/")[2]
-return viewDoc(id,env)
-}
-
-if(path==="/add-customer"){
-return addCustomer(request,env)
-}
-
-return new Response("404")
-
-}
 
 }
