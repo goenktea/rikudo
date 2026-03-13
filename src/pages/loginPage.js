@@ -1,22 +1,37 @@
 export function loginPage(msg=""){
 
 return `
-<body class="login">
+<html>
 
-<h2>Login RIKUDO_NET</h2>
+<head>
+<title>Login RIKUDO_NET</title>
+<link rel="stylesheet" href="/style.css">
+</head>
 
-<p style="color:red">${msg}</p>
+<body>
+
+<div class="login-box">
+
+<h2>RIKUDO_NET</h2>
+
+<p style="color:#666">Login Administrator</p>
+
+<p class="error">${msg}</p>
 
 <form method="POST" action="/login">
 
-<input name="username" placeholder="username"><br>
+<input name="username" placeholder="Username" required>
 
-<input type="password" name="password" placeholder="password"><br>
+<input type="password" name="password" placeholder="Password" required>
 
-<button>Login</button>
+<button type="submit">Login</button>
 
 </form>
 
+</div>
+
 </body>
+
+</html>
 `
 }
