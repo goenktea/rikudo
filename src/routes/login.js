@@ -10,7 +10,11 @@ const u = form.get("username")
 const p = form.get("password")
 
 if(u==="admin" && p==="123456"){
-return Response.redirect("/dashboard")
+
+const url = new URL(request.url)
+
+return Response.redirect(url.origin + "/dashboard")
+
 }
 
 return new Response(loginPage("Login gagal"),{
