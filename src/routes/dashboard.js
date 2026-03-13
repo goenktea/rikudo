@@ -8,10 +8,12 @@ const docs = await env.DB.prepare(
 
 return new Response(
 dashboardPage(docs.results),
-{headers:{ "content-type":"text/html"}}
+{headers:{ "content-type":"text/html;charset=UTF-8"}}
 )
 
 }
+
+/* CREATE DOC */
 
 export async function createDoc(request,env){
 
@@ -26,5 +28,24 @@ await env.DB.prepare(
 const url = new URL(request.url)
 
 return Response.redirect(url.origin + "/dashboard")
+
+}
+
+/* DELETE DOC */
+
+export async function deleteDoc(id,env){
+
+await env.DB.prepare(
+"DELETE FROM customers WHERE document_id=?"
+).bind(id).run()
+
+await env.DB.prepare(
+"DELETE FROM documents WHERE id=?"
+).bind(id).run()
+
+return new Response(
+"<script>location='/dashboard'</script>",
+{headers:{ "content-type":"text/html"}}
+)
 
 }
