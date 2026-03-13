@@ -1,5 +1,3 @@
-import {layout} from "../utils/html.js"
-
 export function docPage(doc,customers){
 
 let rows=""
@@ -9,11 +7,11 @@ let remain=0
 
 customers.forEach((c,i)=>{
 
-total+=c.total_bill
-paid+=c.paid
-remain+=c.remaining
+total += c.total_bill
+paid += c.paid
+remain += c.remaining
 
-rows+=`
+rows += `
 <tr>
 <td>${i+1}</td>
 <td>${c.name}</td>
@@ -26,9 +24,62 @@ rows+=`
 `
 })
 
-const content = `
+return `
+<html>
 
-<h2>Daftar tagihan pelanggan wifi RIKUDO_NET bulan ${doc.name}</h2>
+<head>
+
+<title>Dokumen</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f2f2f2;
+}
+
+header{
+background:#222;
+color:white;
+padding:15px;
+}
+
+.container{
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+background:white;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+}
+
+th{
+background:#f0f0f0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>RIKUDO_NET</h2>
+
+</header>
+
+<div class="container">
+
+<h2>Daftar tagihan bulan ${doc.name}</h2>
 
 <h3>Tambah pelanggan</h3>
 
@@ -53,6 +104,7 @@ const content = `
 <table>
 
 <tr>
+
 <th>No</th>
 <th>Nama</th>
 <th>Alamat</th>
@@ -60,6 +112,7 @@ const content = `
 <th>Total</th>
 <th>Dibayar</th>
 <th>Sisa</th>
+
 </tr>
 
 ${rows}
@@ -70,8 +123,10 @@ ${rows}
 <p>Total Uang Masuk : ${paid}</p>
 <p>Total Sisa : ${remain}</p>
 
+</div>
+
+</body>
+
+</html>
 `
-
-return layout("Dokumen",content)
-
 }
