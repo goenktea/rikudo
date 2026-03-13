@@ -3,45 +3,115 @@ export function docPage(doc,customers,total,totalPaid,totalRemain){
 return `
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <meta charset="UTF-8">
-
 <title>RIKUDO_NET</title>
 
-<link rel="stylesheet" href="/style.css">
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6f9;
+}
+
+header{
+background:#2c3e50;
+color:white;
+padding:15px;
+font-size:20px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.menu{
+display:none;
+background:#34495e;
+padding:10px;
+}
+
+.menu a{
+display:block;
+color:white;
+padding:8px;
+text-decoration:none;
+}
+
+.menu a:hover{
+background:#2c3e50;
+}
+
+.container{
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+}
+
+th{
+background:#2c3e50;
+color:white;
+}
+
+button{
+background:#3498db;
+border:none;
+padding:10px 15px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+footer{
+text-align:center;
+padding:15px;
+margin-top:40px;
+background:#eee;
+}
+
+</style>
 
 <script>
 
 function toggleMenu(){
-const menu=document.getElementById("menu")
-menu.style.display = menu.style.display==="block" ? "none":"block"
+const m=document.getElementById("menu")
+m.style.display = m.style.display==="block" ? "none":"block"
 }
 
-function newCustomer(docId){
+function tambah(docId){
 
-const name=prompt("Nama pelanggan")
-if(!name)return
+const nama=prompt("Nama pelanggan")
+if(!nama) return
 
-const address=prompt("Alamat")
-const phone=prompt("No HP / WhatsApp")
+const alamat=prompt("Alamat")
+const hp=prompt("No HP / WhatsApp")
 const total=prompt("Total tagihan")
 
-const form=document.createElement("form")
+const f=document.createElement("form")
 
-form.method="POST"
-form.action="/add-customer"
+f.method="POST"
+f.action="/add-customer"
 
-form.innerHTML=
+f.innerHTML=
 "<input name='doc_id' value='"+docId+"'>"+
-"<input name='name' value='"+name+"'>"+
-"<input name='address' value='"+address+"'>"+
-"<input name='phone' value='"+phone+"'>"+
+"<input name='name' value='"+nama+"'>"+
+"<input name='address' value='"+alamat+"'>"+
+"<input name='phone' value='"+hp+"'>"+
 "<input name='total' value='"+total+"'>"
 
-document.body.appendChild(form)
-form.submit()
+document.body.appendChild(f)
+f.submit()
 
 }
 
@@ -53,7 +123,7 @@ form.submit()
 
 <header>
 
-<span onclick="toggleMenu()" style="cursor:pointer">&#9776;</span>
+<span onclick="toggleMenu()">&#9776;</span>
 
 <b>RIKUDO_NET</b>
 
@@ -79,7 +149,7 @@ form.submit()
 Daftar tagihan pelanggan wifi RIKUDO_NET pada bulan ${doc.name}
 </h3>
 
-<button onclick="newCustomer(${doc.id})">
+<button onclick="tambah(${doc.id})">
 Tambah pelanggan baru
 </button>
 
@@ -102,17 +172,11 @@ ${customers.map((c,i)=>`
 <tr>
 
 <td>${i+1}</td>
-
 <td>${c.name}</td>
-
 <td>${c.address}</td>
-
 <td>${c.phone}</td>
-
 <td>${c.total}</td>
-
 <td>${c.paid}</td>
-
 <td>${c.total-c.paid}</td>
 
 <td>
@@ -129,15 +193,9 @@ ${customers.map((c,i)=>`
 
 </table>
 
-<div class="totals">
-
 <p>Total seluruh tagihan : ${total}</p>
-
 <p>Total uang masuk : ${totalPaid}</p>
-
 <p>Sisa tagihan : ${totalRemain}</p>
-
-</div>
 
 </div>
 
