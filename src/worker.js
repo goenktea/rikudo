@@ -9,61 +9,39 @@ async fetch(request,env){
 const url = new URL(request.url)
 const path = url.pathname
 
-/* ROUTE CSS */
+/* LOGIN */
 
-if(path === "/style.css"){
-
-return new Response(`
-
-body{
-font-family:Arial,Helvetica,sans-serif;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-margin:0;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
+if(path === "/" || path === "/login"){
+return loginRoute(request)
 }
 
-.login-box{
-background:white;
-padding:35px;
-width:320px;
-border-radius:10px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-text-align:center;
+/* DASHBOARD */
+
+if(path === "/dashboard"){
+return dashboardRoute(env)
 }
 
-.login-box input{
-width:100%;
-padding:10px;
-margin:8px 0;
-border:1px solid #ddd;
-border-radius:5px;
+/* CREATE DOCUMENT */
+
+if(path === "/create-doc"){
+return createDoc(request,env)
 }
 
-.login-box button{
-width:100%;
-padding:10px;
-background:#007bff;
-border:none;
-color:white;
-border-radius:5px;
-cursor:pointer;
+/* VIEW DOCUMENT */
+
+if(path.startsWith("/doc/")){
+const id = path.split("/")[2]
+return viewDoc(id,env)
 }
 
-.login-box button:hover{
-background:#0056b3;
+/* ADD CUSTOMER */
+
+if(path === "/add-customer"){
+return addCustomer(request,env)
 }
 
-.error{
-color:red;
-}
+return new Response("404 Not Found")
 
-`,{
-headers:{
-"content-type":"text/css"
 }
-})
 
 }
